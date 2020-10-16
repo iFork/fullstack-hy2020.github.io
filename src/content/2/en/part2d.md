@@ -5,28 +5,28 @@ letter: d
 lang: en
 ---
 
-<div class="content">
 
+# d. Altering data in server
 
 When creating notes in our application, we would naturally want to store them in some backend server. The [json-server](https://github.com/typicode/json-server) package claims to be a so-called REST or RESTful API in its documentation:
 
-> <i>Get a full fake REST API with zero coding in less than 30 seconds (seriously)</i>
+> *Get a full fake REST API with zero coding in less than 30 seconds (seriously)*
 
 The json-server does not exactly match the description provided by the textbook [definition](https://en.wikipedia.org/wiki/Representational_state_transfer) of a REST API, but neither do most other APIs claiming to be RESTful.
 
 We will take a closer look at REST in the [next part](/en/part3) of the course, but it's important to familiarize ourselves at this point with some of the [conventions](https://en.wikipedia.org/wiki/Representational_state_transfer#Applied_to_Web_services) used by json-server and REST APIs in general. In particular, we will be taking a look at the conventional use of [routes](https://github.com/typicode/json-server#routes), aka URLs and HTTP request types, in REST.
 
-### REST
+## REST
 
-In REST terminology, we refer to individual data objects, such as the notes in our application, as <i>resources</i>. Every resource has a unique address associated with it - its URL. According to a general convention used by json-server, we would be able to locate an individual note at the resource URL <i>notes/3</i>, where 3 is the id of the resource. The <i>notes</i> url, on the other hand, would point to a resource collection containing all the notes.
+In REST terminology, we refer to individual data objects, such as the notes in our application, as *resources*. Every resource has a unique address associated with it - its URL. According to a general convention used by json-server, we would be able to locate an individual note at the resource URL *notes/3*, where 3 is the id of the resource. The *notes* url, on the other hand, would point to a resource collection containing all the notes.
 
-Resources are fetched from the server with HTTP GET requests. For instance, an HTTP GET request to the URL <i>notes/3</i> will return the note that has the id number 3. An HTTP GET request to the <i>notes</i> URL would return a list of all notes.
+Resources are fetched from the server with HTTP GET requests. For instance, an HTTP GET request to the URL *notes/3* will return the note that has the id number 3. An HTTP GET request to the *notes* URL would return a list of all notes.
 
-Creating a new resource for storing a note is done by making an HTTP POST request to the <i>notes</i> URL according to the REST convention that the json-server adheres to. The data for the new note resource is sent in the <i>body</i> of the request.
+Creating a new resource for storing a note is done by making an HTTP POST request to the *notes* URL according to the REST convention that the json-server adheres to. The data for the new note resource is sent in the *body* of the request.
 
-json-server requires all data to be sent in JSON format. What this means in practice is that the data must be a correctly formatted string, and that the request must contain the <i>Content-Type</i> request header with the value <i>application/json</i>.
+json-server requires all data to be sent in JSON format. What this means in practice is that the data must be a correctly formatted string, and that the request must contain the *Content-Type* request header with the value *application/json*.
 
-### Sending Data to the Server
+## Sending Data to the Server
 
 Let's make the following changes to the event handler responsible for creating a new note:
 
@@ -36,7 +36,7 @@ addNote = event => {
   const noteObject = {
     content: newNote,
     date: new Date(),
-    important: Math.random() < 0.5,
+    important: Math.random() > 0.5,
   }
 
 // highlight-start
@@ -50,26 +50,26 @@ addNote = event => {
 ```
 
 
-We create a new object for the note but omit the <i>id</i> property, since it's better to let the server generate ids for our resources!
+We create a new object for the note **but omit the *id* property, since it's better to let the server generate ids for our resources!**
 
-The object is sent to the server using the axios <em>post</em> method. The registered event handler logs the response that is sent back from the server to the console.
+The object is sent to the server using the axios `post` method. The registered event handler logs the response that is sent back from the server to the console.
 
 When we try to create a new note, the following output pops up in console:
 
 ![](../../images/2/20e.png)
 
-The newly created note resource is stored in the value of the <i>data</i> property of the _response_ object.
+The newly created note resource is stored in the value of the *data* property of the _response_ object.
 
-Sometimes it can be useful to inspect HTTP requests in the <i>Network</i> tab of Chrome developer tools, which was used heavily at the beginning of [part 0](/en/part0/fundamentals_of_web_apps#http-get):
+Sometimes it can be useful to inspect HTTP requests in the *Network* tab of Chrome developer tools, which was used heavily at the beginning of [part 0](/en/part0/fundamentals_of_web_apps#http-get):
 
 ![](../../images/2/21e.png)
 
 
 We can use the inspector to check that the headers sent in the POST request are what we expected them to be, and that their values are correct.
 
-Since the data we sent in the POST request was a JavaScript object, axios automatically knew to set the appropriate <i>application/json</i> value for the <i>Content-Type</i> header.
+Since the data we sent in the POST request was a JavaScript object, **axios automatically knew to set the appropriate *application/json* value for the *Content-Type* header.**
 
-The new note is not rendered to the screen yet. This is because we did not update the state of the <i>App</i> component when we created the new note. Let's fix this:
+The new note is not rendered to the screen yet. This is because we did not update the state of the *App* component when we created the new note. Let's fix this:
 
 ```js
 addNote = event => {
@@ -91,7 +91,7 @@ addNote = event => {
 }
 ```
 
-The new note returned by the backend server is added to the list of notes in our application's state in the customary way of using the <em>setNotes</em> function and then resetting the note creation form. An [important detail](/en/part1/a_more_complex_state_debugging_react_apps#handling-arrays) to remember is that the <em>concat</em> method does not change the component's original state, but instead creates a new copy of the list.
+The new note returned by the backend server is added to the list of notes in our application's state in the customary way of using the `setNotes` function and then resetting the note creation form. An [important detail](/en/part1/a_more_complex_state_debugging_react_apps#handling-arrays) to remember is that the `concat` method does not change the component's original state, but instead creates a new copy of the list.
 
 
 Once the data returned by the server starts to have an effect on the behavior of our web applications, we are immediately faced with a whole new set of challenges arising from, for instance, the asynchronicity of communication. This necessitates new debugging strategies, console logging and other means of debugging become increasingly more important, and we must also develop a sufficient understanding of the principles of both the JavaScript runtime and React components. Guessing won't be enough.
@@ -108,14 +108,14 @@ In the next part of the course we will learn to implement our own logic in the b
 > **NB:** In the current version of our application the browser adds the creation date property to the note. Since the clock of the machine running the browser can be wrongly configured, it's much wiser to let the backend server generate this timestamp for us. This is in fact what we will do in the next part of the course.
 
 
-The code for the current state of our application can be found in the  <i>part2-5</i> branch on [github](https://github.com/fullstack-hy2020/part2-notes/tree/part2-5).
+The code for the current state of our application can be found in the  *part2-5* branch on [github](https://github.com/fullstack-hy2020/part2-notes/tree/part2-5).
 
 
-### Changing the importance of notes
+## Changing the importance of notes
 
 Let's add a button to every note that can be used for toggling its importance.
 
-We make the following changes to the <i>Note</i> component:
+We make the following changes to the *Note* component:
 
 ```js
 const Note = ({ note, toggleImportance }) => {
@@ -131,10 +131,10 @@ const Note = ({ note, toggleImportance }) => {
 }
 ```
 
-We add a button to the component and assign its event handler as the <em>toggleImportance</em> function passed in the component's props.
+We add a button to the component and assign its event handler as the `toggleImportance` function passed in the component's props.
 
 
-The <i>App</i> component defines an initial version of the <em>toggleImportanceOf</em> event handler function and passes it to every <i>Note</i> component:
+The *App* component defines an initial version of the `toggleImportanceOf` event handler function and passes it to every *Note* component:
 
 ```js
 const App = () => {
@@ -175,10 +175,10 @@ const App = () => {
 }
 ```
 
-Notice how every note receives its own <i>unique</i> event handler function, since the <i>id</i> of every note is unique.
+Notice how **every note receives its own *unique* event handler function, since the *id* of every note is unique.**
 
 
-E.g. if <i>note.id</i> is 3, the event handler function returned by _toggleImportance(note.id)_ will be:
+E.g. if *note.id* is 3, the event handler function returned by _toggleImportance(note.id)_ will be:
 
 ```js
 () => { console.log('importance of 3 needs to be toggled') }
@@ -199,7 +199,7 @@ console.log(`importance of ${id} needs to be toggled`)
 
 We can now use the "dollar-bracket"-syntax to add parts to the string that will evaluate JavaScript expressions, e.g. the value of a variable. Note that the quotation marks used in template strings differ from the quotation marks used in regular JavaScript strings.
 
-Individual notes stored in the json-server backend can be modified in two different ways by making HTTP requests to the note's unique URL. We can either <i>replace</i> the entire note with an HTTP PUT request, or only change some of the note's properties with an HTTP PATCH request.
+Individual notes stored in the json-server backend can be modified in two different ways by making HTTP requests to the note's unique URL. We can either *replace* the entire note with an HTTP PUT request, or only change some of the note's properties with an HTTP PATCH request.
 
 
 The final form of the event handler function is the following:
@@ -223,7 +223,7 @@ Almost every line of code in the function body contains important details. The f
 The array [find](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find) method is used to find the note we want to modify, and we then assign it to the _note_ variable.
 
 
-After this we create a <i>new object</i> that is an exact copy of the old note, apart from the important property. 
+After this we create a *new object* that is an exact copy of the old note, apart from the important property. 
 
 The code for creating the new object that uses the [object spread](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) syntax 
 may seem a bit strange:
@@ -232,8 +232,7 @@ may seem a bit strange:
 const changedNote = { ...note, important: !note.important }
 ```
 
-In practice <em>{ ...note }</em> creates a new object with copies of all the properties from the _note_ object. When we add properties inside the curly braces after the spreaded object, e.g. <em>{ ...note, important: true }</em>, then the value of the _important_ property of the new object will be _true_. In our example the <em>important</em> property gets the negation of its previous value in the original object.
-
+In practice `{ ...note }` creates a new object with copies of all the properties from the _note_ object. When we add properties inside the curly braces after the spreaded object, e.g. `{ ...note, important: true }`, then the value of the _important_ property of the new object will be _true_. In our example the `important` property gets the negation of its previous value in the original object.
 
 There's a few things to point out. Why did we make a copy of the note object we wanted to modify, when the following code also appears to work:
 
@@ -243,19 +242,19 @@ note.important = !note.important
 
 axios.put(url, note).then(response => {
   // ...
+  })
 ```
 
+**This is not recommended because the variable `note` is a reference to an item in the `notes` array in the component's state, and as we recall we must never mutate state directly in React.** 
 
-This is not recommended because the variable <em>note</em> is a reference to an item in the <em>notes</em> array in the component's state, and as we recall we must never mutate state directly in React. 
 
-
-It's also worth noting that the new object _changedNote_ is only a so-called [shallow copy](https://en.wikipedia.org/wiki/Object_copying#Shallow_copy), meaning that the values of the new object are the same as the values of the old object. If the values of the old object were objects themselves, then the copied values in new object would reference the same objects that were in the old object.
+It's also worth noting that the **new object _changedNote_ is only a so-called **[shallow copy](https://en.wikipedia.org/wiki/Object_copying#Shallow_copy), meaning that the values of the new object are the same as the values of the old object. **If the values of the old object were objects themselves, then** the copied values in new object would reference the same objects that were in the old object.
 
 
 The new note is then sent with a PUT request to the backend where it will replace the old object.
 
 
-The callback function sets the component's <em>notes</em> state to a new array that contains all the items from the previous <em>notes</em> array, except for the old note which is replaced by the updated version of it returned by the server:
+The callback function sets the component's `notes` state to a new array that contains all the items from the previous `notes` array, except for the old note which is replaced by the updated version of it returned by the server:
 
 ```js
 axios.put(url, changedNote).then(response => {
@@ -264,26 +263,26 @@ axios.put(url, changedNote).then(response => {
 ```
 
 
-This is accomplished with the <em>map</em> method:
+This is accomplished with the `map` method:
 
 ```js
 notes.map(note => note.id !== id ? note : response.data)
 ```
 
 
-The map method creates a new array by mapping every item from the old array into an item in the new array. In our example, the new array is created conditionally so that if <em>note.id !== id</em> is true, we simply copy the item from the old array into the new array. If the condition is false, then the note object returned by the server is added to the array instead.
+The map method creates a new array by mapping every item from the old array into an item in the new array. In our example, the new array is created conditionally so that if `note.id !== id` is true, we simply copy the item from the old array into the new array. If the condition is false, then the note object returned by the server is added to the array instead.
 
 
-This <em>map</em> trick may seem a bit strange at first, but it's worth spending some time wrapping your head around it. We will be using this method many times throughout the course.
+This `map` trick may seem a bit strange at first, but it's worth spending some time wrapping your head around it. We will be using this method many times throughout the course.
 
 
-### Extracting communication with the backend into a separate module
+## Extracting communication with the backend into a separate module
 
 
-The <i>App</i> component has become somewhat bloated after adding the code for communicating with the backend server. In the spirit of the [single responsibility principle](https://en.wikipedia.org/wiki/Single_responsibility_principle), we deem it wise to extract this communication into its own [module](/en/part2/rendering_a_collection_modules#refactoring-modules).
+The *App* component has become somewhat bloated after adding the code for communicating with the backend server. In the spirit of the [single responsibility principle](https://en.wikipedia.org/wiki/Single_responsibility_principle), we deem it wise to extract this communication into its own [module](/en/part2/rendering_a_collection_modules#refactoring-modules).
 
 
-Let's create a <i>src/services</i> directory and add a file there called <i>notes.js</i>:
+Let's create a *src/services* directory and add a file there called *notes.js*:
 
 ```js
 import axios from 'axios'
@@ -309,14 +308,16 @@ export default {
 ```
 
 
-The module returns an object that has three functions (<i>getAll</i>, <i>create</i>, and <i>update</i>) as its properties that deal with notes. The functions directly return the promises returned by the axios methods.
+The module returns an object that has three functions (*getAll*, *create*, and *update*) as its properties that deal with notes. The functions directly return the promises returned by the axios methods.
 
-The <i>App</i> component uses <em>import</em> to get access to the module:
+The *App* component uses `import` to get access to the module:
 
 ```js
 import noteService from './services/notes' // highlight-line
 
 const App = () => {
+//...
+}
 ```
 
 The functions of the module can be used directly with the imported variable _noteService_ as follows:
@@ -373,7 +374,7 @@ export default App
 ```
 
 
-We could take our implementation a step further. When the <i>App</i> component uses the functions, it receives an object that contains the entire response for the HTTP request:
+We could take our implementation a step further. When the *App* component uses the functions, it receives an object that contains the entire response for the HTTP request:
 
 ```js
 noteService
@@ -384,7 +385,7 @@ noteService
 ```
 
 
-The <i>App</i> component only uses the <i>response.data</i> property of the response object.
+The *App* component only uses the *response.data* property of the response object.
 
 
 The module would be much nicer to use if, instead of the entire HTTP response, we would only get the response data. Using the module would then look like this:
@@ -426,7 +427,7 @@ export default {
 ```
 
 
-We no longer return the promise returned by axios directly. Instead, we assign the promise to the <em>request</em> variable and call its <em>then</em> method:
+We no longer return the promise returned by axios directly. Instead, we assign the promise to the `request` variable and call its `then` method:
 
 ```js
 const getAll = () => {
@@ -450,13 +451,13 @@ const getAll = () => {
 ```
 
 
-The modified <em>getAll</em> function still returns a promise, as the <em>then</em> method of a promise also [returns a promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/then). 
+The modified `getAll` function still returns a promise, as the `then` method of a promise also [returns a promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/then). 
 
 
-After defining the parameter of the <em>then</em> method to directly return <i>response.data</i>, we have gotten the <em>getAll</em> function to work like we wanted it to. When the HTTP request is successful, the promise returns the data sent back in the response from the backend.
+After defining the parameter of the `then` method to directly return *response.data*, we have gotten the `getAll` function to work like we wanted it to. When the HTTP request is successful, the promise returns the data sent back in the response from the backend.
 
 
-We have to update the <i>App</i> component to work with the changes made to our module.  We have to fix the callback functions given as parameters to the <em>noteService</em> object's methods, so that they use the directly returned response data:
+We have to update the *App* component to work with the changes made to our module.  We have to fix the callback functions given as parameters to the `noteService` object's methods, so that they use the directly returned response data:
 
 ```js
 const App = () => {
@@ -466,9 +467,9 @@ const App = () => {
     noteService
       .getAll()
       // highlight-start      
-      .then(initialNotes => {
+        .then(initialNotes => {
         setNotes(initialNotes)
-      // highlight-end
+        // highlight-end
       })
   }, [])
 
@@ -479,7 +480,7 @@ const App = () => {
     noteService
       .update(id, changedNote)
       // highlight-start      
-      .then(returnedNote => {
+        .then(returnedNote => {
         setNotes(notes.map(note => note.id !== id ? note : returnedNote))
       // highlight-end
       })
@@ -495,10 +496,10 @@ const App = () => {
 
     noteService
       .create(noteObject)
-      // highlight-start      
-      .then(returnedNote => {
+    // highlight-start      
+        .then(returnedNote => {
         setNotes(notes.concat(returnedNote))
-      // highlight-end
+        // highlight-end
         setNewNote('')
       })
   }
@@ -517,10 +518,10 @@ The "Async and performance" book from the [You do not know JS](https://github.co
 Promises are central to modern JavaScript development and it is highly recommended to invest a reasonable amount of time into understanding them.
 
 
-### Cleaner syntax for defining object literals
+## Cleaner syntax for defining object literals
 
 
-The module defining note related services currently exports an object with the properties <i>getAll</i>, <i>create</i> and <i>update</i> that are assigned to functions for handling notes.
+The module defining note related services currently exports an object with the properties *getAll*, *create* and *update* that are assigned to functions for handling notes.
 
 
 The module definition was:
@@ -563,10 +564,10 @@ The module exports the following, rather peculiar looking, object:
 ```
 
 
-The labels to the left of the colon in the object definition are the <i>keys</i> of the object, whereas the ones to the right of it are <i>variables</i> that are defined inside of the module.
+The labels to the left of the colon in the object definition are the *keys* of the object, whereas the ones to the right of it are *variables* that are defined inside of the module.
 
 
-Since the names of the keys and the assigned variables are the same, we can write the object definition with more compact syntax:
+**Since the names of the keys and the assigned variables are the same, we can write the object definition with more compact syntax:**
 
 ```js
 { 
@@ -629,16 +630,16 @@ const person = { name, age }
 ```
 
 
-The result is identical for both expressions. They both create an object with a <i>name</i> property with the value <i>Leevi</i> and an <i>age</i> property with the value <i>0</i>.
+The result is identical for both expressions. They both create an object with a *name* property with the value *Leevi* and an *age* property with the value *0*.
 
 
-### Promises and errors
+## Promises and errors
 
 
 If our application allowed users to delete notes, we could end up in a situation where a user tries to change the importance of a note that has already been deleted from the system.
 
 
-Let's simulate this situation by making the <em>getAll</em> function of the note service return a "hardcoded" note that does not actually exist in the backend server:
+Let's simulate this situation by making the `getAll` function of the note service return a "hardcoded" note that does not actually exist in the backend server:
 
 ```js
 const getAll = () => {
@@ -653,17 +654,17 @@ const getAll = () => {
 }
 ```
 
-When we try to change the importance of the hardcoded note, we see the following error message in the console. The error says that the backend server responded to our HTTP PUT request with a status code 404 <i>not found</i>.
+When we try to change the importance of the hardcoded note, we see the following error message in the console. The error says that the backend server responded to our HTTP PUT request with a status code 404 *not found*.
 
 ![](../../images/2/23e.png)
 
 The application should be able to handle these types of error situations gracefully. Users won't be able to tell that an error has actually occurred unless they happen to have their console open. The only way the error can be seen  in the application is that clicking the button has no effect on the importance of the note.
 
 
-We had [previously](/en/part2/getting_data_from_server#axios-and-promises) mentioned that a promise can be in one of three different states. When an HTTP request fails, the associated promise is <i>rejected</i>. Our current code does not handle this rejection in any way.
+We had [previously](/en/part2/getting_data_from_server#axios-and-promises) mentioned that a promise can be in one of three different states. When an HTTP request fails, the associated promise is *rejected*. Our current code does not handle this rejection in any way.
 
 
-The rejection of a promise is [handled](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises) by providing the <em>then</em> method with a second callback function, which is called in the situation where the promise is rejected.
+The rejection of a promise is [handled](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises) by providing the `then` method with a second callback function, which is called in the situation where the promise is rejected.
 
 
 The more common way of adding a handler for rejected promises is to use the [catch](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch) method. 
@@ -683,10 +684,10 @@ axios
 ```
 
 
-If the request fails, the event handler registered with the <em>catch</em> method gets called.
+If the request fails, the event handler registered with the `catch` method gets called.
 
 
-The <em>catch</em> method is often utilized by placing it deeper within the promise chain.
+The `catch` method is often utilized by placing it deeper within the promise chain.
 
 
 When our application makes an HTTP request, we are in fact creating a [promise chain](https://javascript.info/promise-chaining):
@@ -701,7 +702,7 @@ axios
 ```
 
 
-The <em>catch</em> method can be used to define a handler function at the end of a promise chain, which is called once any promise in the chain throws an error and the promise becomes <i>rejected</i>. 
+The `catch` method can be used to define a handler function at the end of a promise chain, which is called once any promise in the chain throws an error and the promise becomes *rejected*. 
 
 ```js
 axios
@@ -716,7 +717,7 @@ axios
 ```
 
 
-Let's use this feature and register an error handler in the <i>App</i> component:
+Let's use this feature and register an error handler in the *App* component:
 
 ```js
 const toggleImportanceOf = id => {
@@ -748,38 +749,35 @@ Removing an already deleted note from the application's state is done with the a
 notes.filter(n => n.id !== id)
 ```
 
-It's probably not a good idea to use alert in more serious React applications. We will soon learn a more advanced way of displaying messages and notifications to users. There are situations, however, where a simple, battle-tested method like <em>alert</em> can function as a starting point. A more advanced method could always be added in later, given that there's time and energy for it.
+It's probably not a good idea to use alert in more serious React applications. We will soon learn a more advanced way of displaying messages and notifications to users. There are situations, however, where a simple, battle-tested method like `alert` can function as a starting point. A more advanced method could always be added in later, given that there's time and energy for it.
 
-The code for the current state of our application can be found in the  <i>part2-6</i> branch on [github](https://github.com/fullstack-hy2020/part2-notes/tree/part2-6).
+The code for the current state of our application can be found in the  *part2-6* branch on [github](https://github.com/fullstack-hy2020/part2-notes/tree/part2-6).
 
-</div>
 
-<div class="tasks">
+# Exercises 2.15.-2.18.
 
-<h3>Exercises 2.15.-2.18.</h3>
-
-<h4>2.15: Phonebook step7</h4>
+## 2.15: Phonebook step7
 
 Let's return to our phonebook application.
 
 Currently the numbers that are added to the phonebook are not saved to a backend server. Fix this situation.
 
-<h4>2.16: Phonebook step8</h4>
+## 2.16: Phonebook step8
 
 
 Extract the code that handles the communication with the backend into its own module by following the example shown earlier in this part of the course material.
 
-<h4>2.17: Phonebook step9</h4>
+## 2.17: Phonebook step9
 
 Make it possible for users to delete entries from the phonebook. The deletion can be done through a dedicated button for each person in the phonebook list. You can confirm the action from the user by using the [window.confirm](https://developer.mozilla.org/en-US/docs/Web/API/Window/confirm) method:
 
 ![](../../images/2/24e.png)
 
-The associated resource for a person in the backend can be deleted by making an HTTP DELETE request to the resource's URL. If we are deleting e.g. a person who has the <i>id</i> 2, we would have to make an HTTP DELETE request to the URL <i>localhost:3001/persons/2</i>. No data is sent with the request.
+The associated resource for a person in the backend can be deleted by making an HTTP DELETE request to the resource's URL. If we are deleting e.g. a person who has the *id* 2, we would have to make an HTTP DELETE request to the URL *localhost:3001/persons/2*. No data is sent with the request.
 
 You can make an HTTP DELETE request with the [axios](https://github.com/axios/axios) library in the same way that we make all of the other requests.
 
-**NB:** You can't use the name <em>delete</em> for a variable because it's a reserved word in JavaScript. E.g. the following is not possible:
+**NB:** You can't use the name `delete` for a variable because it's a reserved word in JavaScript. E.g. the following is not possible:
 
 ```js
 // use some other name for variable!
@@ -788,7 +786,7 @@ const delete = (id) => {
 }
 ```
 
-<h4>2.18*: Phonebook step10</h4>
+## 2.18*: Phonebook step10
 
 Change the functionality so that if a number is added to an already existing user, the new number will replace the old number. It's recommended to use the HTTP PUT method for updating the phone number. 
 
@@ -796,4 +794,3 @@ If the person's information is already in the phonebook, the application can con
 
 ![](../../images/teht/16e.png)
 
-</div>
